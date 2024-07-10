@@ -3,6 +3,7 @@ import UserTokensRepository from '../typeorm/repositories/UserTokensRepository';
 import UserToken from '../typeorm/entities/UserToken';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
 import AppError from '@shared/errors/AppError';
+import EtherealMail from '@config/mail/EtherealMail';
 
 interface RequestDTO {
   email: string;
@@ -20,6 +21,9 @@ export default class SendForgotPasswordEmailService {
 
     const token = await userTokenRepository.generateToken(existingUser.id);
 
-    console.log(token);
+    await EtherealMail.sendMail({
+      to: email,
+      body: `Solicitação de redefinição de senha recebida: ${token}`,
+    });
   }
 }

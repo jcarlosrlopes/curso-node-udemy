@@ -3,6 +3,7 @@ import CreateUserService from '../services/CreateUserService';
 import ListUsersService from '../services/ListUsersService';
 import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 import SendForgotPasswordEmailService from '../services/SendForgotPasswordEmailService';
+import ResetPasswordService from '../services/ResetPasswordService';
 
 export default class UsersController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -38,6 +39,14 @@ export default class UsersController {
     const forgotPasswordService = new SendForgotPasswordEmailService();
 
     await forgotPasswordService.execute({ email });
+    response.status(204).json();
+  }
+
+  public async resetPassword(request: Request, response: Response) {
+    const { token, password } = request.body;
+    const resetPasswordService = new ResetPasswordService();
+
+    await resetPasswordService.execute({ token, password });
     response.status(204).json();
   }
 }
