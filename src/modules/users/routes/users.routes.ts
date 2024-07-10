@@ -30,4 +30,14 @@ usersRouter.patch(
   usersController.updateAvatar,
 );
 
+usersRouter.post(
+  '/forgotPassword',
+  celebrate({
+    [Segments.BODY]: {
+      email: Joi.string().email().required(),
+    },
+  }),
+  usersController.forgotPassword,
+);
+
 export default usersRouter;

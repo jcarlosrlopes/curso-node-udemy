@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import CreateUserService from '../services/CreateUserService';
 import ListUsersService from '../services/ListUsersService';
 import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
+import SendForgotPasswordEmailService from '../services/SendForgotPasswordEmailService';
 
 export default class UsersController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -30,5 +31,13 @@ export default class UsersController {
     });
 
     return response.json(user);
+  }
+
+  public async forgotPassword(request: Request, response: Response) {
+    const { email } = request.body;
+    const forgotPasswordService = new SendForgotPasswordEmailService();
+
+    await forgotPasswordService.execute({ email });
+    response.status(204).json();
   }
 }
