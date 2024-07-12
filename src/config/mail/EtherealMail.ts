@@ -9,7 +9,7 @@ interface MailContact {
 }
 
 interface SendMailDTO {
-  from: MailContact;
+  from?: MailContact;
   to: MailContact;
   subject: string;
   templateData: ParseMailTemplateDTO;
@@ -38,8 +38,8 @@ export default class EtherealMail {
     try {
       const message = await transporter.sendMail({
         from: {
-          name: from.name || 'Equipe API Vendas',
-          address: from.email || 'equipe@apivendas.com.br',
+          name: from?.name || 'Equipe API Vendas',
+          address: from?.email || 'equipe@apivendas.com.br',
         },
         to: {
           name: to.name,
