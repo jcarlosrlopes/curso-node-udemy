@@ -4,6 +4,7 @@ import UserToken from '../typeorm/entities/UserToken';
 import UsersRepository from '../typeorm/repositories/UsersRepository';
 import AppError from '@shared/errors/AppError';
 import EtherealMail from '@config/mail/EtherealMail';
+import path from 'path';
 
 interface RequestDTO {
   email: string;
@@ -21,6 +22,13 @@ export default class SendForgotPasswordEmailService {
 
     const { token } = await userTokenRepository.generateToken(existingUser.id);
 
+    const forgotPasswordTemplate = path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'forgot_password.hbs',
+    );
+
     await EtherealMail.sendMail({
       to: {
         name: existingUser.name,
@@ -28,10 +36,10 @@ export default class SendForgotPasswordEmailService {
       },
       subject: '[API Vendas] Recuperação de senha',
       templateData: {
-        template: `Olá, {{name}}: {{token}}`,
+        file: forgotPasswordTemplate,
         variables: {
           name: existingUser.name,
-          token: token,
+          link: `http://localhost:3000/users/reset_password?token=${token}`,
         },
       },
     });

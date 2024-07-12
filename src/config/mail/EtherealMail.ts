@@ -49,10 +49,6 @@ export default class EtherealMail {
         html: await mailTemplate.parse(templateData),
       });
 
-      //   if (err) {
-      //     console.log('Erro no envio de email: ', err.message);
-      //   }
-
       console.log('Message sent: %s', message.messageId);
       console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message));
     } catch (error) {
